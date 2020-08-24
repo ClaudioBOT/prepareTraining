@@ -66,4 +66,4 @@ if __name__ == "__main__":
     prepareTraining(dataFile, min, max, perc)
 else:
     print("Hi! For use the library launch prepareTraining with the source file name, the min and number of exeamples and the prec between test set and train set")
-    print(f"Like {__name__}prepareTraining(\"data\", 100, 110, 30)")
+    print(f"Like {__name__}.prepareTraining(\"data\", 100, 110, 30)")
