@@ -6,7 +6,7 @@ def getSetFromCSV(fileName):
     set = {}
 
     if (len(reader.fieldnames) != 2):
-        print("La tabella ha un numero di righe diverso da 2")
+        print("La tabella ha un numero di colonne diverso da 2")
         return set
     phraseTag, intentTag = reader.fieldnames[0], reader.fieldnames[1]
     # Si suppone che il file ha nella prima colonna la frase e nella seconda l'intent
@@ -34,16 +34,20 @@ def prepareTraining(dataFile, min, max, perc):
     train_set = getSetFromCSV(dataFile)
     test_set = {}
 
+    remove_set =[]
+
     for intent in train_set:
         # Taglio l'intent tra il min e il max
         intLen = len(train_set[intent])
         if intLen < min :
-            train_set.pop(intent)
-            break
+            remove_set.append(intent)
         elif intLen > max :
             for _ in range(0, intLen - max): popRandom(train_set[intent])
 
-        # Divido l'intent nei 2 set secondo perc
+    for elem in remove_set: train_set.pop(elem) # Elimino intent senza sufficenti esempi
+
+    # Divido l'intent nei 2 set secondo perc
+    for intent in train_set:
         intLen = len(train_set[intent])
         test_set[intent] = []
         for _ in range(0, int((intLen/100)*perc)):
@@ -68,5 +72,5 @@ if __name__ == "__main__":
     perc = 30
     prepareTraining(dataFile, min, max, perc)
 else:
-    print("Hi! For use the library launch prepareTraining with the source file name, the min and number of exeamples and the prec between test set and train set")
+    print("Hi! To use the library launch prepareTraining with the source file name, the min and number of exeamples and the prec between test set and train set")
     print(f'Like {__name__}.prepareTraining("data", 100, 110, 30)')
